@@ -107,7 +107,7 @@ Setelah server aktif, buka browser dan akses:
 
 ---
 
-## 🛠️ Catatan Pemecahan Masalah (Troubleshooting)
+## 🛠️(Troubleshooting)
 
 Jika Anda atau rekan lain menemui kendala saat instalasi atau menjalankan aplikasi, berikut panduan solusinya:
 

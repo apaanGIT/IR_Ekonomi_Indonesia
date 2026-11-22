@@ -9,15 +9,6 @@ Original file is located at
 ## Project Akhir Information Retrieval — Fase 1: Preprocessing & Dataset
 **Kelompok 2 · Search Engine Berbasis Corpus Berita · Topik: Ekonomi Indonesia**
 
-Notebook ini menyatukan empat corpus, membuat pipeline preprocessing, memeriksa kualitas data, dan menyiapkan format dokumen standar.
-
-| Nama Anggota | NIM | Pemilik Corpus |
-|---|---|---|
-| Ahmad Jiddan | 2310511089 | Liputan6 |
-| Muhammad Rizki Ramadhan Siregar | 2310511059 | Antara |
-| Delas Princisa Hakim | 2310511076 | IDN Times |
-| Mauleni Rizqi Handayani | 2310511085 | Kompas |
-
 **Daftar isi**
 0. Setup
 1. Pengelolaan Corpus (gabung, ID global, standarisasi metadata & tanggal)

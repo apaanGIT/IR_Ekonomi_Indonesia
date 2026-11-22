@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}{{ data.query }} - Hasil Pencarian Ekonomi Indonesia{% endblock %}
+{% block body_class %}page-results{% endblock %}
+
+{% block content %}
+<header class="top-nav">
+    <a href="/" class="brand-link">
+        <h1 class="nav-heading">Ekonomi Indonesia</h1>
+    </a>
+    <form class="search-form compact" action="/search" method="GET">
+        <div class="search-bar">
+            <span class="search-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </span>
+            <input type="text" name="q" id="search-input" value="{{ data.query }}" required autocomplete="off">
+            <button type="button" class="btn-clear" id="btn-clear" onclick="clearSearch()" title="Hapus">✕</button>
+        </div>
+        <button type="submit" class="btn-submit">Cari</button>
+    </form>
+</header>
+
+<div class="stats-ribbon">
+    <div class="stats-container">
+        <span class="query-info">Query: <strong>{{ data.query }}</strong></span>
+        <div class="stats-pills">
+            <span class="pill pill-bm25">BM25: {{ data.stats.bm25_count }}</span>
+            <span class="pill pill-w2v">Semantic W2V: {{ data.stats.w2v_count }}</span>
+            <span class="pill pill-overlap">Beririsan: {{ data.stats.overlap }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="results-layout">
+    <!-- Kolom BM25 -->
+    <div class="method-column">
+        <div class="method-header header-bm25">
+            <h2>BM25</h2>
+        </div>
+        <div class="cards-list">
+            {% if data.bm25_results %}
+                {% set max_bm25 = data.bm25_results[0].score if data.bm25_results[0].score > 0 else 1.0 %}
+                {% for r in data.bm25_results %}
+                {% set norm_pct = ((r.score / max_bm25) * 100)|round(0)|int %}
+                <a href="/detail/{{ r.doc_id }}?q={{ data.query|urlencode }}&method=bm25&rank={{ loop.index }}&score={{ norm_pct }}%25" class="card-item">
+                    <div class="card-meta-top">
+                        <span class="rank-tag">#{{ loop.index }}</span>
+                        <span class="score-badge">Score : {{ norm_pct }}%</span>
+                        <span class="media-tag"><span class="media-icon">🔹</span> {{ r.media }} • {{ r.doc_id }}</span>
+                    </div>
+                    <h3 class="card-title">{{ r.title }}</h3>
+                    <p class="card-snippet">{{ r.text_clean[:140] }}...</p>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">Tidak ada dokumen yang cocok dengan BM25.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Kolom Semantic W2V -->
+    <div class="method-column">
+        <div class="method-header header-w2v">
+            <h2>Semantic W2V</h2>
+        </div>
+        <div class="cards-list">
+            {% if data.w2v_results %}
+                {% for r in data.w2v_results %}
+                {% set w2v_pct = ((r.score if r.score > 0 else 0) * 100)|round(0)|int %}
+                <a href="/detail/{{ r.doc_id }}?q={{ data.query|urlencode }}&method=w2v&rank={{ loop.index }}&score={{ w2v_pct }}%25" class="card-item">
+                    <div class="card-meta-top">
+                        <span class="rank-tag">#{{ loop.index }}</span>
+                        <span class="score-badge">Score : {{ w2v_pct }}%</span>
+                        <span class="media-tag"><span class="media-icon">🔹</span> {{ r.media }} • {{ r.doc_id }}</span>
+                    </div>
+                    <h3 class="card-title">{{ r.title }}</h3>
+                    <p class="card-snippet">{{ r.text_clean[:140] }}...</p>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">Tidak ada hasil dari Semantic Word2Vec.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

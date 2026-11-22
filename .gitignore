@@ -1,0 +1,14 @@
+# .gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+.venv/
+env/
+.idea/
+.vscode/
+
+# Data binary besar (Opsional: jika file model > 50MB sebaiknya tidak ke git biasa atau gunakan git lfs)
+# w2v_idwiki.bin berukuran ~48MB (masih di bawah batas 100MB GitHub)
